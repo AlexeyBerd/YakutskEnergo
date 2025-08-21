@@ -1,0 +1,1 @@
+worker: python energy_bot.py
