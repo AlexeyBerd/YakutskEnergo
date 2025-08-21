@@ -194,20 +194,21 @@ def remove_keyboard():
     return json.dumps({'remove_keyboard': True})
 
 def get_page(url):
-    """Функция получает HTML-код страницы с таймаутом"""
     try:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
+            'Accept-Encoding': 'gzip, deflate',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
         }
-        # Отключаем прокси для PythonAnywhere
-        session = requests.Session()
-        session.trust_env = False
         
-        response = session.get(url, verify=False, headers=headers, timeout=15)
-        response.encoding = 'utf-8'
+        # Попробуем разные таймауты
+        response = requests.get(url, headers=headers, timeout=(10, 30), verify=False)
         return response.text
     except Exception as e:
-        logging.error(f"Ошибка при запросе к сайту {url}: {e}")
+        logging.error(f"Ошибка: {e}")
         return None
 
 def handle_message(chat_id, text):
@@ -641,4 +642,5 @@ def main():
             time.sleep(10)
 
 if __name__ == "__main__":
+
     main()
