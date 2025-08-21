@@ -34,16 +34,14 @@ LAST_CHECK_FILE = 'last_check_time.json'
 # Переменная для хранения последнего update_id
 last_update_id = 0
 
-def load_user_data():
-    """Загружает данные пользователей из файла"""
-    if os.path.exists(USER_DATA_FILE):
-        try:
-            with open(USER_DATA_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception as e:
-            logging.error(f"Ошибка загрузки user_data: {e}")
-            return {}
-    return {}
+# ▼▼▼ ДОБАВЬТЕ ЗДЕСЬ ▼▼▼
+def check_network():
+    """Проверяет доступность сайта"""
+    try:
+        response = requests.get('https://www.yakutskenergo.ru', timeout=10)
+        return response.status_code == 200
+    except:
+        return False
 
 def save_user_data(data):
     """Сохраняет данные пользователей в файл"""
@@ -644,3 +642,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
